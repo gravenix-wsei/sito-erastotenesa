@@ -5,10 +5,10 @@ using namespace std;
 
 typedef uint32_t number_t;
 
-class Table
+class PrimeTable
 {
 public:
-    Table(number_t size) {
+    explicit PrimeTable(number_t size) {
         this->size = size;
         this->table = new bool[size + 1];
         memset(table, true, size + 1);
@@ -28,6 +28,24 @@ public:
                 cout << i << " ";
             }
         }
+        cout << endl;
+    }
+
+    void printTwinPrimes() {
+        for (number_t i=2; i<=this->size; i++) {
+            if (this->isFirstTwinPrime(i)) {
+                cout << "(" << i << ", " << i+2 << ") ";
+            }
+        }
+        cout << endl;
+    }
+
+    void printQuadrupletPrimes() {
+        for (number_t i=2; i<=this->size; i++) {
+            if (this->isFirstTwinPrime(i) && this->isFirstTwinPrime(i+6)) {
+                cout << "(" << i << ", " << i+2 << ", " << i+6 << ", " << i+8 << ") ";
+            }
+        }
     }
 private:
     bool* table;
@@ -41,6 +59,10 @@ private:
         for (number_t i=number*2; i <= this->size; i+=number) {
             this->table[i] = false;
         }
+    }
+
+    bool isFirstTwinPrime(number_t number) {
+        return this->table[number] && this->table[number + 2];
     }
 };
 
@@ -57,10 +79,15 @@ number_t inputMaxNumber()
 
 int main() {
     number_t size = inputMaxNumber();
-    Table table = Table(size);
-
+    PrimeTable table = PrimeTable(size);
     table.calculate();
+
+    cout << "Prime numbers: ";
     table.printPrimeNumbers();
+    cout << "Twin primes: ";
+    table.printTwinPrimes();
+    cout << "Quadruplet primes: ";
+    table.printQuadrupletPrimes();
 
     cout << endl;
     return 0;
